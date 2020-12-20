@@ -4,6 +4,10 @@ const path = require('path');
 
 const app = express();
 
+function findById(id, animalsArray) {
+  const result = animalsArray.filter(animal => animal.id === id)[0];
+  return result;
+}
 
 //Filter function to filter and return back an array of the resulting query
 function filterByQuery(query, animalsArray) {
@@ -52,6 +56,16 @@ app.get('/api/animals', (req, res) => {
   }
   res.json(results);
 });
+
+app.get('/api/animals/:id', (req, res) => {
+  const result = findById(req.params.id, animals);
+  if (result) {
+    res.json(result);
+  } else {
+    res.send(404);
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
